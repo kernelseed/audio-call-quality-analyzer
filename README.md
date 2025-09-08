@@ -1,4 +1,5 @@
-# ClariAI - Professional Audio Quality Analysis Platform
+
+ng # ClariAI - Professional Audio Quality Analysis Platform
 
 ClariAI is a comprehensive, professional-grade audio quality analysis platform using LangChain and machine learning. Built for real-time monitoring, intelligent classification, and seamless Hugging Face integration.
 
