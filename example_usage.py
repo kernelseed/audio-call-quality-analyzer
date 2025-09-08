@@ -322,6 +322,152 @@ def demo_huggingface_integration():
         logger.error(f"Error in Hugging Face integration demo: {e}")
         return None
 
+def demo_advanced_ml_metrics():
+    """Demonstrate ClariAI's advanced ML metrics and model comparison."""
+    print("\n🎯 ClariAI Advanced ML Metrics Demo")
+    print("=" * 50)
+    
+    # Create trainer
+    trainer = ClariAITrainer()
+    
+    # Create synthetic training data
+    print("Creating synthetic training data...")
+    quality_categories = ['excellent', 'good', 'fair', 'poor']
+    
+    for i in range(50):  # Create 50 samples
+        # Generate synthetic features based on quality
+        quality = np.random.choice(quality_categories, p=[0.3, 0.4, 0.2, 0.1])
+        
+        # Create synthetic features
+        if quality == 'excellent':
+            features = {
+                'spectral_centroid': np.random.normal(2000, 200),
+                'zcr': np.random.normal(0.1, 0.02),
+                'rms_energy': np.random.normal(0.8, 0.1),
+                'mfcc_mean': np.random.normal(0.5, 0.1),
+                'snr': np.random.normal(25, 3),
+                'voice_activity_ratio': np.random.normal(0.9, 0.05),
+                'spectral_rolloff': np.random.normal(4000, 500),
+                'spectral_bandwidth': np.random.normal(1500, 200),
+                'mfcc_std': np.random.normal(0.3, 0.05),
+                'dynamic_range': np.random.normal(0.7, 0.1),
+                'crest_factor': np.random.normal(0.6, 0.1)
+            }
+        elif quality == 'good':
+            features = {
+                'spectral_centroid': np.random.normal(1800, 300),
+                'zcr': np.random.normal(0.15, 0.03),
+                'rms_energy': np.random.normal(0.6, 0.15),
+                'mfcc_mean': np.random.normal(0.3, 0.15),
+                'snr': np.random.normal(18, 4),
+                'voice_activity_ratio': np.random.normal(0.8, 0.1),
+                'spectral_rolloff': np.random.normal(3500, 600),
+                'spectral_bandwidth': np.random.normal(1200, 300),
+                'mfcc_std': np.random.normal(0.4, 0.1),
+                'dynamic_range': np.random.normal(0.5, 0.15),
+                'crest_factor': np.random.normal(0.5, 0.15)
+            }
+        elif quality == 'fair':
+            features = {
+                'spectral_centroid': np.random.normal(1500, 400),
+                'zcr': np.random.normal(0.2, 0.04),
+                'rms_energy': np.random.normal(0.4, 0.2),
+                'mfcc_mean': np.random.normal(0.1, 0.2),
+                'snr': np.random.normal(12, 5),
+                'voice_activity_ratio': np.random.normal(0.6, 0.15),
+                'spectral_rolloff': np.random.normal(3000, 800),
+                'spectral_bandwidth': np.random.normal(1000, 400),
+                'mfcc_std': np.random.normal(0.5, 0.15),
+                'dynamic_range': np.random.normal(0.3, 0.2),
+                'crest_factor': np.random.normal(0.4, 0.2)
+            }
+        else:  # poor
+            features = {
+                'spectral_centroid': np.random.normal(1200, 500),
+                'zcr': np.random.normal(0.3, 0.05),
+                'rms_energy': np.random.normal(0.2, 0.15),
+                'mfcc_mean': np.random.normal(-0.1, 0.25),
+                'snr': np.random.normal(6, 4),
+                'voice_activity_ratio': np.random.normal(0.4, 0.2),
+                'spectral_rolloff': np.random.normal(2500, 1000),
+                'spectral_bandwidth': np.random.normal(800, 500),
+                'mfcc_std': np.random.normal(0.6, 0.2),
+                'dynamic_range': np.random.normal(0.1, 0.15),
+                'crest_factor': np.random.normal(0.2, 0.15)
+            }
+        
+        # Add some noise
+        for key in features:
+            features[key] += np.random.normal(0, abs(features[key]) * 0.05)
+        
+        # Add sample to trainer
+        trainer.add_training_sample(f"synthetic_{i}.wav", quality, {'synthetic': True})
+    
+    # Prepare data
+    X, y = trainer.prepare_training_data()
+    
+    # Compare multiple models
+    print("\n📊 Comparing Multiple ML Algorithms:")
+    print("-" * 60)
+    
+    models_to_test = ['random_forest', 'gradient_boosting', 'svm', 'neural_network']
+    if 'xgboost' in trainer.models:
+        models_to_test.append('xgboost')
+    
+    comparison_results = trainer.compare_models(X, y, models_to_test)
+    
+    # Print results
+    print(f"{'Model':<20} {'Accuracy':<12} {'F1-Macro':<12} {'Precision':<12} {'Recall':<12}")
+    print("-" * 60)
+    
+    for model_name, results in comparison_results.items():
+        if 'error' not in results:
+            acc = results['accuracy']['mean']
+            f1 = results['f1_macro']['mean']
+            prec = results['precision_macro']['mean']
+            rec = results['recall_macro']['mean']
+            print(f"{model_name:<20} {acc:.3f}±{results['accuracy']['std']:.3f}  {f1:.3f}±{results['f1_macro']['std']:.3f}  {prec:.3f}±{results['precision_macro']['std']:.3f}  {rec:.3f}±{results['recall_macro']['std']:.3f}")
+        else:
+            print(f"{model_name:<20} ERROR: {results['error']}")
+    
+    # Train best model for detailed evaluation
+    print(f"\n🔧 Training Random Forest for detailed evaluation...")
+    trainer.train_model('random_forest', optimize_hyperparameters=True)
+    
+    # Detailed evaluation
+    from sklearn.model_selection import train_test_split
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+    
+    evaluation = trainer.evaluate_model(X_test, y_test)
+    
+    print(f"\n📈 Detailed Evaluation Results:")
+    print("-" * 40)
+    basic = evaluation['basic_metrics']
+    print(f"Accuracy: {basic['accuracy']:.3f}")
+    print(f"Balanced Accuracy: {basic['balanced_accuracy']:.3f}")
+    print(f"Matthews Correlation Coefficient: {basic['matthews_correlation_coefficient']:.3f}")
+    print(f"Cohen's Kappa: {basic['cohen_kappa']:.3f}")
+    
+    f1_metrics = evaluation['f1_metrics']
+    print(f"\nF1 Scores:")
+    print(f"  Macro: {f1_metrics['macro']:.3f}")
+    print(f"  Micro: {f1_metrics['micro']:.3f}")
+    print(f"  Weighted: {f1_metrics['weighted']:.3f}")
+    
+    if evaluation['roc_auc'] is not None:
+        print(f"\nROC AUC: {evaluation['roc_auc']:.3f}")
+    
+    # Feature importance
+    importance = trainer.get_feature_importance()
+    if importance:
+        print(f"\n📊 Top 5 Most Important Features:")
+        sorted_features = sorted(importance.items(), key=lambda x: x[1], reverse=True)
+        for i, (feature, imp) in enumerate(sorted_features[:5], 1):
+            print(f"  {i}. {feature}: {imp:.3f}")
+    
+    print(f"\n✅ Advanced ML metrics demonstration completed!")
+    return trainer, evaluation
+
 def cleanup_test_files():
     """Clean up any remaining test files."""
     test_files = [
@@ -369,6 +515,9 @@ def main():
         demo_huggingface_integration()
         
         print("\n" + "="*50)
+        demo_advanced_ml_metrics()
+        
+        print("\n" + "="*50)
         print("✅ All demonstrations completed successfully!")
         
         # Display summary
@@ -379,6 +528,9 @@ def main():
         print("✅ Batch processing capabilities")
         print("✅ Advanced feature extraction")
         print("✅ Hugging Face integration")
+        print("✅ Advanced ML metrics (F1, Precision, Recall, AUC, MCC)")
+        print("✅ Model comparison and visualization")
+        print("✅ XGBoost and ensemble methods")
         print("\n🎯 ClariAI is ready for production use!")
         
     except Exception as e:

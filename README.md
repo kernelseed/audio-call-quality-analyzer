@@ -8,6 +8,9 @@ ClariAI is a comprehensive, professional-grade audio quality analysis platform u
 - **🎵 Advanced Audio Processing**: Professional-grade feature extraction using librosa and signal processing
 - **🧠 LangChain Integration**: Intelligent quality analysis powered by language models
 - **🤖 Machine Learning Pipeline**: Train custom quality classifiers with multiple algorithms
+- **📊 Comprehensive ML Metrics**: F1 Score, Precision, Recall, AUC, MCC, Cohen's Kappa
+- **🚀 XGBoost & Ensemble Methods**: Advanced gradient boosting and ensemble learning
+- **📈 Model Comparison & Visualization**: Automated model evaluation with plots
 - **⚡ Real-time Analysis**: Lightning-fast inference for live call monitoring
 - **☁️ Hugging Face Integration**: Seamless model sharing and deployment
 - **🎤 Voice Activity Detection**: Advanced speech vs. silence identification
@@ -178,6 +181,122 @@ model_url = uploader.upload_model(
     model_description="Custom audio quality analysis model"
 )
 ```
+
+## 🎯 Advanced Machine Learning Capabilities
+
+ClariAI provides comprehensive machine learning capabilities with multiple algorithms, advanced metrics, and automated model comparison.
+
+### 📊 Supported ML Algorithms
+
+- **Random Forest**: Ensemble learning with feature importance
+- **XGBoost**: Advanced gradient boosting with hyperparameter tuning
+- **Support Vector Machine (SVM)**: Kernel-based classification
+- **Neural Networks**: Multi-layer perceptron with customizable architecture
+- **Gradient Boosting**: Traditional gradient boosting
+- **Extra Trees**: Extremely randomized trees
+- **AdaBoost**: Adaptive boosting
+- **Logistic Regression**: Linear classification with regularization
+- **Decision Tree**: Interpretable tree-based classification
+- **Naive Bayes**: Probabilistic classification
+
+### 📈 Comprehensive Evaluation Metrics
+
+ClariAI provides extensive evaluation metrics for thorough model assessment:
+
+#### Basic Metrics
+- **Accuracy**: Overall classification accuracy
+- **Balanced Accuracy**: Accuracy accounting for class imbalance
+- **Matthews Correlation Coefficient (MCC)**: Comprehensive correlation metric
+- **Cohen's Kappa**: Agreement measure accounting for chance
+
+#### Precision, Recall, and F1 Scores
+- **Macro Average**: Unweighted mean across classes
+- **Micro Average**: Global average across all samples
+- **Weighted Average**: Weighted by class support
+
+#### Advanced Metrics
+- **ROC AUC**: Area under the ROC curve
+- **Precision-Recall Curve**: Detailed precision-recall analysis
+- **Confusion Matrix**: Detailed classification breakdown
+
+### 🔧 Model Comparison and Selection
+
+```python
+from training_pipeline import ClariAITrainer
+
+# Initialize trainer
+trainer = ClariAITrainer()
+
+# Add training data
+# ... add samples ...
+
+# Compare all available models
+X, y = trainer.prepare_training_data()
+comparison_results = trainer.compare_models(X, y)
+
+# Print comparison table
+print("Model Performance Comparison:")
+for model_name, results in comparison_results.items():
+    if 'error' not in results:
+        print(f"{model_name}: F1={results['f1_macro']['mean']:.3f}±{results['f1_macro']['std']:.3f}")
+```
+
+### 📊 Visualization and Analysis
+
+```python
+# Plot model comparison
+trainer.plot_model_comparison(comparison_results, metric='f1_macro', save_path='comparison.png')
+
+# Plot confusion matrix
+trainer.plot_confusion_matrix(X_test, y_test, save_path='confusion_matrix.png')
+
+# Plot feature importance
+trainer.get_feature_importance_plot(save_path='feature_importance.png')
+```
+
+### 🚀 XGBoost Advanced Features
+
+```python
+# Train XGBoost with hyperparameter optimization
+metrics = trainer.train_model('xgboost', optimize_hyperparameters=True)
+
+# Access feature importance
+importance = trainer.get_feature_importance()
+print("Top features:", sorted(importance.items(), key=lambda x: x[1], reverse=True)[:5])
+```
+
+### 📋 Detailed Model Evaluation
+
+```python
+# Comprehensive evaluation
+evaluation = trainer.evaluate_model(X_test, y_test)
+
+# Access all metrics
+basic_metrics = evaluation['basic_metrics']
+f1_metrics = evaluation['f1_metrics']
+precision_metrics = evaluation['precision_metrics']
+recall_metrics = evaluation['recall_metrics']
+
+print(f"Accuracy: {basic_metrics['accuracy']:.3f}")
+print(f"F1 Macro: {f1_metrics['macro']:.3f}")
+print(f"ROC AUC: {evaluation['roc_auc']:.3f}")
+```
+
+### 🔄 Cross-Validation and Hyperparameter Tuning
+
+ClariAI automatically performs:
+- **Stratified K-Fold Cross-Validation**: Ensures balanced class distribution
+- **Grid Search Optimization**: Finds optimal hyperparameters
+- **Model-Specific Parameter Grids**: Tailored for each algorithm
+- **Performance Tracking**: Comprehensive metrics across all folds
+
+### 📈 Production-Ready Features
+
+- **Model Persistence**: Save and load trained models
+- **Batch Prediction**: Efficient processing of multiple files
+- **Real-time Inference**: Fast prediction for live applications
+- **Feature Engineering**: Automatic feature extraction and scaling
+- **Error Handling**: Robust error management and logging
 
 ## 📚 Documentation
 
