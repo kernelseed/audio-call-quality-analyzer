@@ -1,0 +1,36 @@
+# Core AI/ML Dependencies - All Open Source
+langchain==0.3.25
+langchain-community==0.3.24
+transformers==4.56.0
+torch==2.7.0
+torchaudio==2.7.0
+
+# Audio Processing - All Open Source
+librosa==0.11.0
+soundfile==0.13.1
+pydub==0.25.1
+webrtcvad==2.0.10
+speechrecognition==3.10.0
+pyaudio==0.2.11
+
+# Data Science - All Open Source
+numpy==2.0.2
+pandas==2.2.2
+scikit-learn==1.6.1
+
+# Hugging Face Ecosystem - All Open Source
+huggingface-hub==0.34.4
+datasets==4.0.0
+accelerate==1.10.1
+evaluate==0.4.1
+
+# All packages use permissive licenses (MIT, Apache 2.0, BSD, ISC)
+# Commercial use is explicitly allowed for all dependencies
+
+# System Dependencies (install before pip install):
+# macOS: brew install portaudio
+# Ubuntu/Debian: sudo apt-get install portaudio19-dev
+# Windows: Pre-compiled wheels available
+
+# Optional: For microphone input and advanced audio features
+# pyaudio  # Requires system PortAudio library
